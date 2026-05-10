@@ -30,6 +30,8 @@ if (feature('ABLATION_BASELINE') && process.env.CLAUDE_CODE_ABLATION_BASELINE) {
  * All imports are dynamic to minimize module evaluation for fast paths.
  * Fast-path for --version has zero imports beyond this file.
  */
+// Keep import specifiers behind a function boundary so Bun compile doesn't
+// eagerly resolve optional feature modules in minimal distributions.
 const importDynamic = async (specifier: string) => import(specifier);
 
 async function main(): Promise<void> {
