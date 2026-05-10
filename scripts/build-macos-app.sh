@@ -4,7 +4,7 @@ set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 APP_NAME="${APP_NAME:-Claude Code}"
-BUNDLE_ID="${BUNDLE_ID:-com.sekai0ni0itamio.claudecode}"
+BUNDLE_ID="${BUNDLE_ID:-com.claudecode.app}"
 APP_VERSION="${APP_VERSION:-0.1.0}"
 BINARY_NAME="${BINARY_NAME:-claude-code}"
 ENTRYPOINT="${ENTRYPOINT:-$ROOT_DIR/src/entrypoints/cli.tsx}"
