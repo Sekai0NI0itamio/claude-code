@@ -18,7 +18,7 @@ OUTPUT_BINARY_PATH="$MACOS_DIR/$BINARY_NAME"
 ZIP_PATH="$BUILD_DIR/$APP_NAME-macos-arm64.zip"
 
 if ! command -v bun >/dev/null 2>&1; then
-  echo "bun is required but was not found in PATH."
+  echo "bun is required but was not found in PATH. Install from https://bun.sh/docs/installation"
   exit 1
 fi
 
