@@ -30,6 +30,10 @@ if (feature('ABLATION_BASELINE') && process.env.CLAUDE_CODE_ABLATION_BASELINE) {
  * All imports are dynamic to minimize module evaluation for fast paths.
  * Fast-path for --version has zero imports beyond this file.
  */
+// Keep import specifiers behind a function boundary so Bun compile doesn't
+// eagerly resolve optional feature modules in minimal distributions.
+const importDynamic = async (specifier: string) => import(specifier);
+
 async function main(): Promise<void> {
   const args = process.argv.slice(2);
 
@@ -100,7 +104,7 @@ async function main(): Promise<void> {
   if (feature('DAEMON') && args[0] === '--daemon-worker') {
     const {
       runDaemonWorker
-    } = await import('../daemon/workerRegistry.js');
+    } = await importDynamic('../daemon/workerRegistry.js');
     await runDaemonWorker(args[1]);
     return;
   }
@@ -174,7 +178,7 @@ async function main(): Promise<void> {
     initSinks();
     const {
       daemonMain
-    } = await import('../daemon/main.js');
+    } = await importDynamic('../daemon/main.js');
     await daemonMain(args.slice(1));
     return;
   }
@@ -188,7 +192,7 @@ async function main(): Promise<void> {
       enableConfigs
     } = await import('../utils/config.js');
     enableConfigs();
-    const bg = await import('../cli/bg.js');
+    const bg = await importDynamic('../cli/bg.js');
     switch (args[0]) {
       case 'ps':
         await bg.psHandler(args.slice(1));
@@ -213,7 +217,7 @@ async function main(): Promise<void> {
     profileCheckpoint('cli_templates_path');
     const {
       templatesMain
-    } = await import('../cli/handlers/templateJobs.js');
+    } = await importDynamic('../cli/handlers/templateJobs.js');
     await templatesMain(args);
     // process.exit (not return) — mountFleetView's Ink TUI can leave event
     // loop handles that prevent natural exit.
@@ -227,7 +231,7 @@ async function main(): Promise<void> {
     profileCheckpoint('cli_environment_runner_path');
     const {
       environmentRunnerMain
-    } = await import('../environment-runner/main.js');
+    } = await importDynamic('../environment-runner/main.js');
     await environmentRunnerMain(args.slice(1));
     return;
   }
@@ -239,7 +243,7 @@ async function main(): Promise<void> {
     profileCheckpoint('cli_self_hosted_runner_path');
     const {
       selfHostedRunnerMain
-    } = await import('../self-hosted-runner/main.js');
+    } = await importDynamic('../self-hosted-runner/main.js');
     await selfHostedRunnerMain(args.slice(1));
     return;
   }
