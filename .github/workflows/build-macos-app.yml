@@ -34,19 +34,19 @@ jobs:
       - name: Build .app bundle
         shell: bash
         run: |
-          chmod +x /home/runner/work/claude-code/claude-code/scripts/build-macos-app.sh
-          /home/runner/work/claude-code/claude-code/scripts/build-macos-app.sh
+          chmod +x "${{ github.workspace }}/scripts/build-macos-app.sh"
+          "${{ github.workspace }}/scripts/build-macos-app.sh"
 
       - name: Upload .app artifact
         uses: actions/upload-artifact@v4
         with:
           name: claude-code-macos-app
-          path: /home/runner/work/claude-code/claude-code/dist/macos/Claude Code.app
+          path: ${{ github.workspace }}/dist/macos/Claude Code.app
           if-no-files-found: error
 
       - name: Upload zipped artifact
         uses: actions/upload-artifact@v4
         with:
           name: claude-code-macos-app-zip
-          path: /home/runner/work/claude-code/claude-code/dist/macos/Claude Code-macos-arm64.zip
+          path: ${{ github.workspace }}/dist/macos/Claude Code-macos-arm64.zip
           if-no-files-found: error
